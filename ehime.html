@@ -1,0 +1,44 @@
+<html>
+
+<head>
+  <title>新型コロナウイルス陽性患者数（愛媛県）</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+  <py-env>
+    - matplotlib
+    - pandas
+  </py-env>
+</head>
+
+<body>
+  <h1>新型コロナウイルス陽性患者数（愛媛県）</h1>
+  <div id="mpl"></div>
+  <py-script output="mpl">
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+from pyodide.http import open_url
+
+url = "https://www.pref.ehime.jp/opendata-catalog/dataset/2174/resource/7194/380008_ehime_covid19_patients.csv"
+
+df = pd.read_csv(open_url(url), index_col=0, parse_dates=["公表_年月日", "発症_年月日"])
+
+s = df["公表_年月日"].value_counts().sort_index().asfreq("D", fill_value=0)
+
+fig, ax = plt.subplots(figsize=(15, 5))
+
+locator = mdates.AutoDateLocator()
+formatter = mdates.ConciseDateFormatter(locator)
+ax.xaxis.set_major_locator(locator)
+ax.xaxis.set_major_formatter(formatter)
+
+ax.bar(s.index, s.values)
+
+fig
+  </py-script>
+</body>
+
+</html>
