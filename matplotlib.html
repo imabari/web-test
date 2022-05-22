@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Matplotlib</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <py-env>
+      - matplotlib
+      - pandas
+    </py-env>
+    </head>
+    <body>
+      <div id="mpl"></div>
+      <py-script output="mpl">
+import time
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import pandas as pd
+
+from pyodide.http import open_url
+
+url = "https://okumuralab.org/~okumura/python/data/COVID-tokyo.csv"
+
+df = pd.read_csv(open_url(url), parse_dates=['date'])
+
+t = df['date'].values
+x = df['confirmed'].values
+
+DAY = pd.to_timedelta(1, 'day')
+t1 = pd.to_datetime('2022-01-01')
+t2 = t[-1] + DAY
+
+fig, ax = plt.subplots()
+
+locator = mdates.AutoDateLocator()
+formatter = mdates.ConciseDateFormatter(locator)
+
+ax.xaxis.set_major_locator(locator)
+ax.xaxis.set_major_formatter(formatter)
+
+ax.bar(t, x, color='C1', width=-DAY, align='edge')
+ax.set_xlim(pd.to_datetime('2020-03-01'), t[-1])
+ax.legend(['Tokyo confirmed'], loc='upper left')
+
+ax2 = ax.twinx()
+ax2.set_ylim(ax.get_ylim())
+ax2.set_yticks([x[-1]])
+
+fig        
+      </py-script>
+    </body>
+</html>
