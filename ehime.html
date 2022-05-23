@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
   <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+  <script type="module" src="https://code4sabae.github.io/csv-table/csv-table.mjs"></script>
   <py-env>
     - matplotlib
     - pandas
@@ -15,6 +16,7 @@
 <body>
   <h1>新型コロナウイルス陽性患者数（愛媛県）</h1>
   <div id="mpl"></div>
+  <csv-table id="csv"></csv-table>
   <py-script output="mpl">
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -37,7 +39,8 @@ ax.xaxis.set_major_formatter(formatter)
 
 ax.bar(s.index, s.values)
 
-fig
+pyscript.write('mpl', fig)
+pyscript.write('csv', s.to_csv())
   </py-script>
 </body>
 
