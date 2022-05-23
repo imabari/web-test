@@ -17,7 +17,7 @@
   <h1>新型コロナウイルス陽性患者数（愛媛県）</h1>
   <div id="mpl"></div>
   <csv-table id="csv"></csv-table>
-  <py-script output="mpl">
+  <py-script output="csv">
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -40,7 +40,7 @@ ax.xaxis.set_major_formatter(formatter)
 ax.bar(s.index, s.values)
 
 pyscript.write('mpl', fig)
-pyscript.write('csv', s.to_csv())
+s.to_csv()
   </py-script>
 </body>
 
