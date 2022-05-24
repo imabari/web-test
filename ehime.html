@@ -39,7 +39,7 @@ ax.xaxis.set_major_formatter(formatter)
 ax.bar(s.index, s.values)
 
 pyscript.write('mpl', fig)
-s.to_html()
+pd.DataFrame(s).to_html()
   </py-script>
 </body>
 
